@@ -1,4 +1,5 @@
 using api;
+using api.GraphQL.Types;
 using api.Middleware;
 using infrastructure.Repositories;
 using service;
@@ -20,6 +21,7 @@ builder.Services.AddSingleton<FollowService>();
 builder.Services.AddJwtService();
 builder.Services.AddSwaggerGenWithBearerJWT();
 
+builder.Services.AddGraphQLServer().AddQueryType<QueryGql>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,6 +42,7 @@ app.UseSecurityHeaders();
 app.UseSpaStaticFiles();
 app.UseSpa(conf => { conf.Options.SourcePath = frontEndRelativePath; });
 
+app.MapGraphQL();
 app.MapControllers();
 app.UseMiddleware<JwtBearerHandler>();
 app.UseMiddleware<GlobalExceptionHandler>();
